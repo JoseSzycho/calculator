@@ -1,0 +1,52 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+
+#flex-container{
+    display: flex;
+    border-radius: 20px;
+    width: 700px;
+    height: 900px;
+    padding: 4px;
+    flex-direction: column;
+    background-color: blue;
+}
+
+#display{
+    height: 150%;
+    margin-bottom: 5px;
+    font-size: 100px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-weight: 700;
+    color: white;
+    
+}
+
+div{
+    display: flex;
+    height: 100%;
+
+}
+
+button{
+    flex: 1;
+    margin: 2px;
+    border-radius: 10px;
+    font-size: 50px;
+    color: white;
+    font-weight: bolder;
+}
+
+.number, #zero{
+    background-color: rgb(70, 70, 70);
+}
+
+.operator{
+    background-color: rgb(58, 58, 58);
+}
+
+#zero{
+    flex-grow: 2.12;
+}
