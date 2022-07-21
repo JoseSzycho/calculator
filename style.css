@@ -6,15 +6,13 @@ body{
 #flex-container{
     display: flex;
     border-radius: 20px;
-    width: 700px;
-    height: 900px;
     padding: 4px;
     flex-direction: column;
-    background-color: blue;
+    background-color: rgb(26, 31, 51);
 }
 
 #display{
-    height: 150%;
+    margin: 40px 20px 40px 40px;
     margin-bottom: 5px;
     font-size: 100px;
     justify-content: flex-end;
@@ -26,27 +24,31 @@ body{
 
 div{
     display: flex;
-    height: 100%;
-
 }
 
 button{
-    flex: 1;
+    width: 200px;
     margin: 2px;
     border-radius: 10px;
     font-size: 50px;
-    color: white;
+    padding: 30px 70px;
+    color: rgb(162, 163, 175);
     font-weight: bolder;
 }
 
 .number, #zero{
-    background-color: rgb(70, 70, 70);
+    background-color: rgb(55, 58, 75);
 }
 
 .operator{
-    background-color: rgb(58, 58, 58);
+    background-color: rgb(49, 49, 69);
 }
 
 #zero{
-    flex-grow: 2.12;
+    flex: 1;
+}
+
+#equal{
+    background-color: rgb(76, 194, 255);
+    color: rgb(53, 139, 183);
 }
