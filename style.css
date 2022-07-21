@@ -48,7 +48,7 @@ button{
     flex: 1;
 }
 
-#equal{
+.equal{
     background-color: rgb(76, 194, 255);
     color: rgb(53, 139, 183);
 }
