@@ -31,7 +31,7 @@ function updateSmallDisplay(equal=""){
 }
 
 function storeButtonValue(){
-    if(this.getAttribute("class") == "operator"){ 
+    if(this.getAttribute("class") == "operator" && this.getAttribute("value") != "+-"){ 
         if(valuesToCalculate.firstValue && !valuesToCalculate.secondValue){ //once you set firs number and second you cant change operator
             valuesToCalculate.operand = this.getAttribute("value"); 
         };
@@ -46,8 +46,21 @@ function storeButtonValue(){
             updateDisplay(valuesToCalculate.secondValue);
         }
     }
+    
+    if(this.getAttribute("value") == "+-"){
+        if(valuesToCalculate.firstValue && !valuesToCalculate.operand && !valuesToCalculate.secondValue){
+            valuesToCalculate.firstValue = - valuesToCalculate.firstValue;
+            updateDisplay(valuesToCalculate.firstValue);
+        }
+
+        if(valuesToCalculate.secondValue && valuesToCalculate.operand && valuesToCalculate.firstValue){
+            valuesToCalculate.secondValue = - valuesToCalculate.secondValue;
+            updateDisplay(valuesToCalculate.secondValue);
+        }
+    }
+
     updateSmallDisplay();
-    console.log(valuesToCalculate);
+
 }
 
 function calculateResult(){
