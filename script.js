@@ -1,6 +1,6 @@
 let valuesToCalculate = { //values used for the calculus
-    operand: null,
     firstValue: null,
+    operand: null,
     secondValue: null,
 };
 
@@ -9,6 +9,25 @@ let calculatorResult;
 function updateDisplay(toDisplay){
     const element = document.querySelector("#display");
     element.textContent = toDisplay;
+}
+
+function updateSmallDisplay(equal=""){
+    const element = document.querySelector("#small-display");
+    let toDisplay = Object
+                        .values(valuesToCalculate)
+                        .reduce((value, el) => {
+                            if(el){return value+" "+el;
+                            }else{
+                                return value;
+                            }},[]);
+    
+    if(equal == "=") {
+        toDisplay += " =";
+        console.log(toDisplay)
+    };
+    element.textContent = toDisplay;              
+    
+
 }
 
 function storeButtonValue(){
@@ -27,6 +46,7 @@ function storeButtonValue(){
             updateDisplay(valuesToCalculate.secondValue);
         }
     }
+    updateSmallDisplay();
     console.log(valuesToCalculate);
 }
 
@@ -37,7 +57,7 @@ function calculateResult(){
         if(valuesToCalculate.operand == "x") calculatorResult = valuesToCalculate.firstValue * valuesToCalculate.secondValue;
         if(valuesToCalculate.operand == "/") calculatorResult = valuesToCalculate.firstValue / valuesToCalculate.secondValue;
         if(valuesToCalculate.operand == "%") calculatorResult = valuesToCalculate.firstValue + valuesToCalculate.secondValue;
-        console.log(calculatorResult);
+        updateSmallDisplay("=");
         Object.keys(valuesToCalculate).forEach(i => valuesToCalculate[i] = null); //reset values for new calculation
         updateDisplay(calculatorResult);
     }
