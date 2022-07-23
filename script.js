@@ -67,11 +67,43 @@ function addNumber(){
     
 }
 
-function selectOperator(){
-    if(toCalculate.firstNumber && !toCalculate.secondNumber){
-        toCalculate.operator = this.getAttribute("value");
+function changeNumberSign(){
+    if(!toCalculate.secondNumber){
+        toCalculate.firstNumber = (-1*Number(toCalculate.firstNumber)).toString();
+        principalDisplay(toCalculate.firstNumber); 
     }
-    principalDisplay(toCalculate.operator);
+    else{
+        toCalculate.secondNumber = (-1*Number(toCalculate.secondNumber)).toString();
+        principalDisplay(toCalculate.secondNumber); 
+    };
+}
+
+function deleteLastNumber(){
+    if(!toCalculate.secondNumber){
+        toCalculate.firstNumber = toCalculate.firstNumber.slice(0,-1);
+    }
+    else{
+        toCalculate.secondNumber = toCalculate.secondNumber.slice(0,-1);
+    }
+}
+
+function selectOperator(){
+    if(this.getAttribute("value") == "+-"){
+        changeNumberSign();
+    }
+    else if(toCalculate.firstNumber && !toCalculate.secondNumber){
+        const operator = this.getAttribute("value");
+        switch (operator){
+            case "D":
+                deleteLastNumber();
+                break;
+            case "C":
+                break;
+            default:
+                toCalculate.operator = operator;
+        }
+        principalDisplay(toCalculate.operator);  
+    };  
 }
 
 //adds event listener to numbers
