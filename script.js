@@ -4,13 +4,49 @@ let toCalculate = {
     secondNumber: null,
 };
 
-function secondaryDisplay(){
-    
+let calculatorResult = null;
+
+function evaluate(){
+    let result;
+    const a = Number(toCalculate.firstNumber);
+    const b = Number(toCalculate.secondNumber);
+    switch(toCalculate.operator){
+        case '+':
+            console.log(5555)
+            result = a + b;
+            break;
+        case '-':
+            result = a - b;
+            break;
+        case 'x':
+            result = a * b;
+            break;
+        case '/':
+            result = a / b;
+            break;
+    };
+    calculatorResult = result;
+    principalDisplay(result);
 }
 
-function principalDisplay(value){
+function secondaryDisplay(){
+    const element = document.querySelector("#secondary-display");
+    let toDisplay = Object
+                        .values(toCalculate)
+                        .reduce((value, el) => {
+                            if(el){return value+" "+el;
+                            }else{
+                                return value;
+                            }},[]);                       
+    if(calculatorResult){
+        toDisplay += " =";
+    }
+    element.textContent = toDisplay;
+}
+
+function principalDisplay(toDisplay){
     const element = document.querySelector("#principal-display");
-    element.textContent = value;
+    element.textContent = toDisplay;
     secondaryDisplay();
 }
 
@@ -42,6 +78,10 @@ function selectOperator(){
 const numberElements = document.querySelectorAll("button[class]:not(.equal, .operator)"); //gets all button elements
 numberElements.forEach(el => el.addEventListener("click", addNumber));
 
-//ads event listener to operators
+//adds event listener to operators
 const operatorElements = document.querySelectorAll("button[class]:not(.equal, .number)")
 operatorElements.forEach(el => el.addEventListener("click", selectOperator));
+
+//adds event listener to equal button
+const equalElement = document.querySelector(".equal");
+equalElement.addEventListener("click", evaluate);
