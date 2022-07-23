@@ -4,6 +4,7 @@ body{
 }
 
 #flex-container{
+    width: 800px;
     display: flex;
     border-radius: 20px;
     padding: 4px;
@@ -35,11 +36,11 @@ div{
 }
 
 button{
-    width: 200px;
+    flex: 1;
     margin: 2px;
     border-radius: 10px;
     font-size: 50px;
-    padding: 30px 70px;
+    padding: 30px 0px 30px;
     color: rgb(162, 163, 175);
     font-weight: bolder;
 }
@@ -53,7 +54,7 @@ button{
 }
 
 #zero{
-    flex: 1;
+   flex-basis: 204px;
 }
 
 .equal{

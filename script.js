@@ -20,14 +20,13 @@ function updateSmallDisplay(equal=""){
                             }else{
                                 return value;
                             }},[]);
-    
     if(equal == "=") {
         toDisplay += " =";
-        console.log(toDisplay)
+    };
+    if(equal == "0") {
+        toDisplay = " 0";
     };
     element.textContent = toDisplay;              
-    
-
 }
 
 function storeButtonValue(){
@@ -45,8 +44,7 @@ function storeButtonValue(){
             valuesToCalculate.secondValue = parseInt(this.getAttribute("value")); //sets second number
             updateDisplay(valuesToCalculate.secondValue);
         }
-    }
-    
+    };
     if(this.getAttribute("value") == "+-"){
         if(valuesToCalculate.firstValue && !valuesToCalculate.operand && !valuesToCalculate.secondValue){
             valuesToCalculate.firstValue = - valuesToCalculate.firstValue;
@@ -57,8 +55,13 @@ function storeButtonValue(){
             valuesToCalculate.secondValue = - valuesToCalculate.secondValue;
             updateDisplay(valuesToCalculate.secondValue);
         }
+    };
+    if(this.getAttribute("value") == "C"){
+        updateSmallDisplay("0");
+        Object.keys(valuesToCalculate).forEach(i => valuesToCalculate[i] = null);
+        updateDisplay(0);
+        return;
     }
-
     updateSmallDisplay();
 
 }
