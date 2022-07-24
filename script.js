@@ -1,119 +1,165 @@
-let toCalculate = {
+let toCalculate={
     firstNumber: null,
     operator: null,
     secondNumber: null,
+    result: null,
+};
+let previousResult = false;
+let currentNumber = null;
+
+function display(toDisplay){
+    //displaying principal-display
+    const principalDisplay = document.querySelector("#principal-display");
+    principalDisplay.textContent = toDisplay;
+
 };
 
-let calculatorResult = null;
-
-function evaluate(){
-    let result;
-    const a = Number(toCalculate.firstNumber);
-    const b = Number(toCalculate.secondNumber);
-    switch(toCalculate.operator){
-        case '+':
-            console.log(5555)
-            result = a + b;
-            break;
-        case '-':
-            result = a - b;
-            break;
-        case 'x':
-            result = a * b;
-            break;
-        case '/':
-            result = a / b;
-            break;
-    };
-    calculatorResult = result;
-    principalDisplay(result);
-}
-
-function secondaryDisplay(){
-    const element = document.querySelector("#secondary-display");
-    let toDisplay = Object
-                        .values(toCalculate)
-                        .reduce((value, el) => {
-                            if(el){return value+" "+el;
-                            }else{
-                                return value;
-                            }},[]);                       
-    if(calculatorResult){
-        toDisplay += " =";
+function secondaryDisplay(clear = false){
+    let toDisplay;
+    //displaying secondary-display
+    if(clear == false){
+        toDisplay = Object.values(toCalculate)
+                                .filter(el => el);                  
+        if(toDisplay[3]) toDisplay[3] = "=";
+        toDisplay = toDisplay.join(" ");        
+        console.log(toDisplay)     
+    }else{
+        toDisplay = '0';
     }
-    element.textContent = toDisplay;
+
+
+    const secondaryDisplay = document.querySelector("#secondary-display");
+    secondaryDisplay.textContent = toDisplay; 
 }
 
-function principalDisplay(toDisplay){
-    const element = document.querySelector("#principal-display");
-    element.textContent = toDisplay;
+function updateNumbers(){
+    if(!toCalculate.operator && !toCalculate.secondNumber){
+        toCalculate.firstNumber = currentNumber;
+        return;
+    }
+    if(toCalculate.firstNumber && toCalculate.operator && currentNumber){
+        toCalculate.secondNumber = currentNumber;
+    }
+}
+
+function storeNumber(){
+    let value = this.getAttribute("value");
+    if(!currentNumber){
+        currentNumber = value;
+    }else{
+        currentNumber += value;
+    };
+    updateNumbers();
+    display(currentNumber);
+    secondaryDisplay();
+};
+
+function addDecimal(){
+    if(!currentNumber) return;
+    if(currentNumber.includes(".")) return;
+    currentNumber += ".";
+    updateNumbers();
+    display(currentNumber);
+    secondaryDisplay();
+};
+
+function toggleSign(){
+    if(!currentNumber) return;
+    currentNumber = (-1*Number(currentNumber)).toString();
+    updateNumbers();
+    display(currentNumber);
     secondaryDisplay();
 }
 
-function addNumber(){
-    //adding first number
-    if(!toCalculate.operator && !toCalculate.secondNumber){
-        toCalculate.firstNumber += this.getAttribute("value");
-        toCalculate.firstNumber = toCalculate.firstNumber.replace('null','')
-        principalDisplay(toCalculate.firstNumber);
-    };
-    //adding second number
-    if(toCalculate.firstNumber && toCalculate.operator){
-        toCalculate.secondNumber += this.getAttribute("value");
-        toCalculate.secondNumber = toCalculate.secondNumber.replace('null','')
-        principalDisplay(toCalculate.secondNumber);
+function clear(){
+    toCalculate.firstNumber = null,
+    toCalculate.operator = null,
+    toCalculate.secondNumber = null,
+    toCalculate.result = null,
+    previousResult = false;
+    currentNumber = null;
+    display(0);
+    secondaryDisplay(true);
+};
+
+function del(){
+    if((currentNumber).length > 1) {
+        currentNumber = currentNumber.slice(0, -1);
+        display(currentNumber);
+        updateNumbers();
+        secondaryDisplay();
     }
-    //console.log(toCalculate.firstNumber, toCalculate.operator, toCalculate.secondNumber)
+}
+
+function storeOperator(){
+    if(this.getAttribute("value") == 'C'){
+        clear();
+        return
+    }
+    if(this.getAttribute("value") == 'D'){
+        del();
+        return
+    }
+    if(!currentNumber && previousResult == false) return; //if there is a previous result, I can chose an operator
+    toCalculate.operator = this.getAttribute("value");
+    //if there is an operator, first number is already chosen
+    currentNumber = null;
+    updateNumbers();
+    display(toCalculate.operator);
+    secondaryDisplay();
+};
+
+function evaluate(){
+    if(!toCalculate.firstNumber || !toCalculate.operator || !currentNumber) return 0;
+    const a = Number(toCalculate.firstNumber);
+    const b = Number(toCalculate.secondNumber);
+    let operator = toCalculate.operator;
+    let result;
+    switch(operator){
+        case "+":
+            result = a + b;
+            break;
+        case "-":
+            result = a - b;
+            break;
+        case "x":
+            result = a * b;
+            break;
+        case "/":
+            result = a / b;
+            break;
+    }
+    result = result.toString();
+    //preparing for next calculus
+    display(result);
+    toCalculate.result = result;
+    secondaryDisplay();
+    toCalculate.firstNumber = result;
+    toCalculate.secondNumber = null;
+    toCalculate.operator = null;
+    previousResult = true;
+    toCalculate.result = null;
+    currentNumber = null;
     
-}
+    
+};
 
-function changeNumberSign(){
-    if(!toCalculate.secondNumber){
-        toCalculate.firstNumber = (-1*Number(toCalculate.firstNumber)).toString();
-        principalDisplay(toCalculate.firstNumber); 
-    }
-    else{
-        toCalculate.secondNumber = (-1*Number(toCalculate.secondNumber)).toString();
-        principalDisplay(toCalculate.secondNumber); 
-    };
-}
+//Getting number from DOM
+const elementNumber = document.querySelectorAll(".number");
+elementNumber.forEach(el => el.addEventListener('click', storeNumber));
 
-function deleteLastNumber(){
-    if(!toCalculate.secondNumber){
-        toCalculate.firstNumber = toCalculate.firstNumber.slice(0,-1);
-    }
-    else{
-        toCalculate.secondNumber = toCalculate.secondNumber.slice(0,-1);
-    }
-}
+//Adding decimal point
+const elementDecimal = document.querySelector("#decimal-point");
+elementDecimal.addEventListener('click', addDecimal);
 
-function selectOperator(){
-    if(this.getAttribute("value") == "+-"){
-        changeNumberSign();
-    }
-    else if(toCalculate.firstNumber && !toCalculate.secondNumber){
-        const operator = this.getAttribute("value");
-        switch (operator){
-            case "D":
-                deleteLastNumber();
-                break;
-            case "C":
-                break;
-            default:
-                toCalculate.operator = operator;
-        }
-        principalDisplay(toCalculate.operator);  
-    };  
-}
+//Toggling sign
+const toggleElement = document.querySelector("#toggle-sign");
+toggleElement.addEventListener("click", toggleSign);
 
-//adds event listener to numbers
-const numberElements = document.querySelectorAll("button[class]:not(.equal, .operator)"); //gets all button elements
-numberElements.forEach(el => el.addEventListener("click", addNumber));
+//Getting operators
+const operatorElement = document.querySelectorAll(".operator");
+operatorElement.forEach(el => el.addEventListener('click', storeOperator));
 
-//adds event listener to operators
-const operatorElements = document.querySelectorAll("button[class]:not(.equal, .number)")
-operatorElements.forEach(el => el.addEventListener("click", selectOperator));
-
-//adds event listener to equal button
+//Calculating result
 const equalElement = document.querySelector(".equal");
 equalElement.addEventListener("click", evaluate);

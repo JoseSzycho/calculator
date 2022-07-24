@@ -45,11 +45,11 @@ button{
     font-weight: bolder;
 }
 
-.number, #zero{
+#decimal-point, .number, #zero{
     background-color: rgb(55, 58, 75);
 }
 
-.operator{
+#toggle-sign, .operator{
     background-color: rgb(49, 49, 69);
 }
 
